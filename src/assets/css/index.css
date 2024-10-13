@@ -1,0 +1,30 @@
+@font-face {
+    font-family: "Montserrat-Regular";
+    src: url("@assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Montserrat-ExtraBold";
+    src: url("@assets/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Montserrat-Bold";
+    src: url("@assets/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+:root {
+    /* fonts */
+    --montserrat-regular: "Montserrat-Regular", sans-serif;
+    --montserrat-extrabold: "Montserrat-ExtraBold", sans-serif;
+    --montserrat-bold: "Montserrat-Bold", sans-serif;
+
+    /* colors */
+    --blue: #0047FF;
+    --white: #FFF;
+
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
