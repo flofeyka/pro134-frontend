@@ -7,7 +7,7 @@ export const OrderSecondJuridicalPage = () => {
 
     return (
         <>
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Область/Район'}
                 placeholder={'Введите облать/район'}
@@ -17,7 +17,7 @@ export const OrderSecondJuridicalPage = () => {
                 }}
                 errored={Boolean(formState.errors.name)}
             />
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Город'}
                 placeholder={'Введите город'}
@@ -27,7 +27,7 @@ export const OrderSecondJuridicalPage = () => {
                 }}
                 errored={Boolean(formState.errors.name)}
             />
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Адрес'}
                 placeholder={'Введите адрес'}

@@ -5,17 +5,8 @@ import { DropModal } from "@comp/pages/admin-add-product-page/common/DropModal";
 import { Button } from "@comp/ui/button/Button";
 import { TextInput } from "@comp/ui/text-input/TextInput";
 import { authFetch } from "@src/lib/auth_fetch";
-import {
-  ChangeEvent,
-  DragEventHandler,
-  useEffect,
-  useState
-} from "react";
-import {
-  FormProvider,
-  SubmitHandler,
-  useForm
-} from "react-hook-form";
+import { ChangeEvent, DragEventHandler, useEffect, useState } from "react";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -143,6 +134,7 @@ const ButtonsBlock = styled.div`
 `;
 
 interface IAddProductForm {
+  articul: number;
   model: string;
   capacity: string;
   rated_power: string;
@@ -276,8 +268,21 @@ export const AdminAddProductPage = () => {
               <Form onSubmit={methods.handleSubmit(submitHandler)}>
                 <Params>
                   <Param $errored={Boolean(methods.formState.errors.model)}>
-                    <div>Модель</div>
+                    <div>Артикул</div>
                     <TextInput
+                      type="text"
+                      placeholder="Нет инфо"
+                      registerOpts={{
+                        name: "articul",
+                        options: {
+                          required: true,
+                        },
+                      }}
+                    />
+                  </Param>
+                  <Param $errored={Boolean(methods.formState.errors.model)}>
+                    <div>Модель</div>
+                    <TextInput required
                       type="text"
                       placeholder="Нет инфо"
                       registerOpts={{
