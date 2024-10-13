@@ -64,7 +64,7 @@ const Param = styled.div<{ $errored: boolean }>`
     color: #202020;
     flex-shrink: 0;
     text-wrap: wrap;
-    width: 30%;
+    width: 40%;
   }
 
   & > *:last-child {
@@ -72,7 +72,7 @@ const Param = styled.div<{ $errored: boolean }>`
     border-radius: 0;
     line-height: normal;
     height: auto;
-    width: 70%;
+    width: 40%;
     border: none;
     flex-shrink: 0;
     outline: none;
@@ -179,11 +179,17 @@ export const AdminAddProductPage = () => {
   const methods = useForm();
   const navigate = useNavigate();
   const [images, setImages] = useState<Array<string>>([]);
-  const [files, setFiles] = useState<Array<File>>([]);
+  const [photos, setPhotos] = useState<Array<File>>([]);
+  const [pdf, setPdf] = useState<Array<File>>([]);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangePhotos = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files[0];
-    setFiles(files.concat(file));
+    setPhotos(photos.concat(file));
+  };
+
+  const onChangePdf = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files[0];
+    setPdf(pdf.concat(file));
   };
 
   const submitHandler: SubmitHandler<IAddProductForm> = async (data, event) => {
@@ -194,8 +200,11 @@ export const AdminAddProductPage = () => {
       formData.set(key, value);
     });
 
-    files.forEach((file: File) => {
+    photos.forEach((file: File) => {
       formData.append("photos", file);
+    });
+    pdf.forEach((file: File) => {
+      formData.append("pdf", file);
     });
 
     const res = await authFetch("/api/product", {
@@ -216,7 +225,7 @@ export const AdminAddProductPage = () => {
     const dropFiles = Array.from(e.dataTransfer.files).filter((file: File) => {
       return regex.test(file.type);
     });
-    setFiles(files.concat(dropFiles));
+    setPhotos(photos.concat(dropFiles));
     setDropModal(false);
   };
 
@@ -225,19 +234,19 @@ export const AdminAddProductPage = () => {
     const dataUrls: Array<string> = [];
 
     const readFile = (index: number) => {
-      if (index < files.length) {
-        reader.readAsDataURL(files[index]);
+      if (index < photos.length) {
+        reader.readAsDataURL(photos[index]);
         reader.onload = (ev) => {
           dataUrls.push(ev.target.result.toString());
           readFile(index + 1);
         };
-      } else if (index === files.length) {
+      } else if (index === photos.length) {
         setImages(dataUrls);
       }
       return;
     };
     readFile(0);
-  }, [files]);
+  }, [photos]);
 
   return (
     <>
@@ -250,7 +259,7 @@ export const AdminAddProductPage = () => {
                 <SwiperSlide>
                   <div
                     onDoubleClick={() =>
-                      setFiles(files.filter((f, i) => i !== index))
+                      setPhotos(photos.filter((f, i) => i !== index))
                     }
                   >
                     <AddImageItem key={index} src={item} />
@@ -258,7 +267,7 @@ export const AdminAddProductPage = () => {
                 </SwiperSlide>
               ))}
               <SwiperSlide>
-                <AddImageInput onChange={onChange} />
+                <AddImageInput onChange={onChangePhotos} />
               </SwiperSlide>
             </Swiper>
           </ImageContainer>
@@ -282,7 +291,8 @@ export const AdminAddProductPage = () => {
                   </Param>
                   <Param $errored={Boolean(methods.formState.errors.model)}>
                     <div>Модель</div>
-                    <TextInput required
+                    <TextInput
+                      required
                       type="text"
                       placeholder="Нет инфо"
                       registerOpts={{
@@ -840,6 +850,10 @@ export const AdminAddProductPage = () => {
                         },
                       }}
                     />
+                  </Param>
+                  <Param $errored={false}>
+                    <div>Инструкция</div>
+                    <input type="file" onChange={onChangePdf} />
                   </Param>
                 </Params>
                 <ButtonsBlock>
