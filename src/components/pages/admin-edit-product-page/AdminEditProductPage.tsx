@@ -82,7 +82,7 @@ const Param = styled.div<{ $errored: boolean }>`
     border-radius: 0;
     line-height: normal;
     height: auto;
-    width: 70%;
+    width: 40%;
     border: none;
     flex-shrink: 0;
     outline: none;
@@ -193,7 +193,8 @@ export const AdminEditProductPage = () => {
   }
 
   const [images, setImages] = useState<Array<string>>([]);
-  const [files, setFiles] = useState<Array<File>>([]);
+  const [photos, setPhotos] = useState<Array<File>>([]);
+  const [pdf, setPdf] = useState<Array<File>>([]);
 
   useEffect(() => {
     useProductWithStopped(+id)
@@ -210,7 +211,7 @@ export const AdminEditProductPage = () => {
           "peak_power",
           fillMaskString(p.peak_power.toString(), 5, "0") + " Вт"
         );
-        methods.setValue('articul', p.articul)
+        methods.setValue("articul", p.articul);
         methods.setValue("battery_type", p.battery_type);
         methods.setValue("adapter", p.adapter);
         methods.setValue("car_charge_input", p.car_charge_input);
@@ -266,7 +267,7 @@ export const AdminEditProductPage = () => {
           }
 
           if (index === p.photos.length) {
-            setFiles(neededLoadedFiles);
+            setPhotos(neededLoadedFiles);
             return;
           }
 
@@ -277,9 +278,13 @@ export const AdminEditProductPage = () => {
       });
   }, []);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangePhotos = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files[0];
-    setFiles(files.concat(file));
+    setPhotos(photos.concat(file));
+  };
+  const onChangePdf = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files[0];
+    setPdf(pdf.concat(file));
   };
 
   const submitHandler: SubmitHandler<IEditProductForm> = async (
@@ -293,8 +298,11 @@ export const AdminEditProductPage = () => {
       formData.set(key, value);
     });
 
-    files.forEach((file: File) => {
+    photos.forEach((file: File) => {
       formData.append("photos", file);
+    });
+    pdf.forEach((file: File) => {
+      formData.append("pdf", file);
     });
 
     const res = await authFetch(`/api/product/${id}`, {
@@ -315,7 +323,7 @@ export const AdminEditProductPage = () => {
     const dropFiles = Array.from(e.dataTransfer.files).filter((file: File) => {
       return regex.test(file.type);
     });
-    setFiles(files.concat(dropFiles));
+    setPhotos(photos.concat(dropFiles));
     setDropModal(false);
   };
 
@@ -324,19 +332,19 @@ export const AdminEditProductPage = () => {
     const dataUrls: Array<string> = [];
 
     const readFile = (index: number) => {
-      if (index < files.length) {
-        reader.readAsDataURL(files[index]);
+      if (index < photos.length) {
+        reader.readAsDataURL(photos[index]);
         reader.onload = (ev) => {
           dataUrls.push(ev.target.result.toString());
           readFile(index + 1);
         };
-      } else if (index === files.length) {
+      } else if (index === photos.length) {
         setImages(dataUrls);
       }
       return;
     };
     readFile(0);
-  }, [files]);
+  }, [photos]);
 
   return (
     <>
@@ -349,7 +357,7 @@ export const AdminEditProductPage = () => {
                 <SwiperSlide>
                   <div
                     onDoubleClick={() =>
-                      setFiles(files.filter((f, i) => i !== index))
+                      setPhotos(photos.filter((f, i) => i !== index))
                     }
                   >
                     <AddImageItem key={index} src={item} />
@@ -357,7 +365,7 @@ export const AdminEditProductPage = () => {
                 </SwiperSlide>
               ))}
               <SwiperSlide>
-                <AddImageInput onChange={onChange} />
+                <AddImageInput onChange={onChangePhotos} />
               </SwiperSlide>
             </Swiper>
           </ImageContainer>
@@ -926,6 +934,10 @@ export const AdminEditProductPage = () => {
                         },
                       }}
                     />
+                  </Param>
+                  <Param $errored={false}>
+                    <div>Инструкция</div>
+                    <input type="file" onChange={onChangePdf} />
                   </Param>
                 </Params>
                 <ButtonsBlock>
