@@ -7,7 +7,7 @@ export const OrderSecondStage = () => {
 
     return (
         <>
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Область/Район'}
                 placeholder={'Введите облать/район'}
@@ -17,7 +17,7 @@ export const OrderSecondStage = () => {
                 }}
                 errored={Boolean(formState.errors.region)}
             />
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Город'}
                 placeholder={'Введите город'}
@@ -27,7 +27,7 @@ export const OrderSecondStage = () => {
                 }}
                 errored={Boolean(formState.errors.city)}
             />
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Адрес'}
                 placeholder={'Введите адрес'}
@@ -36,16 +36,6 @@ export const OrderSecondStage = () => {
                     options: {required: true}
                 }}
                 errored={Boolean(formState.errors.address)}
-            />
-            <LabeledTextInput
-                type={'text'}
-                label={'Квартира'}
-                placeholder={'Введите свою квартиру'}
-                registerOpts={{
-                    name: 'apartment',
-                    options: {required: true}
-                }}
-                errored={Boolean(formState.errors.apartment)}
             />
 
         </>

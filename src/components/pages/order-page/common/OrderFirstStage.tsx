@@ -7,7 +7,7 @@ export const OrderFirstStage = () => {
 
   return (
     <>
-      <LabeledTextInput
+      <LabeledTextInput required
         type={"text"}
         label={"Ваше имя"}
         placeholder={"Введите имя"}
@@ -17,7 +17,7 @@ export const OrderFirstStage = () => {
         }}
         errored={Boolean(formState.errors.name)}
       />
-      <LabeledTextInput
+      <LabeledTextInput required
         type={"text"}
         label={"Ваше фамилия"}
         placeholder={"Введите фамилию"}
@@ -36,7 +36,7 @@ export const OrderFirstStage = () => {
         }}
         errored={Boolean(formState.errors.patronymic)}
       />
-      <LabeledTextInput
+      <LabeledTextInput required
         type={"email"}
         label={"Ваша электронная почта"}
         placeholder={"Введите e-mail"}
@@ -46,7 +46,7 @@ export const OrderFirstStage = () => {
         }}
         errored={Boolean(formState.errors.email)}
       />
-      <LabeledPhoneInput
+      <LabeledPhoneInput required
         type={"text"}
         label={"Ваш номер телефона"}
         placeholder={"Введите номер телефона"}

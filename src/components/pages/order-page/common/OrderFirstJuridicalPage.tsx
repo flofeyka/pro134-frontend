@@ -8,7 +8,7 @@ export const OrderFirstJuridicalPage = () => {
 
     return (
         <>
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'text'}
                 label={'Название организации'}
                 placeholder={'Введите название организации'}
@@ -38,7 +38,7 @@ export const OrderFirstJuridicalPage = () => {
                 }}
                 errored={Boolean(formState.errors.kpp)}
             />
-            <LabeledTextInput
+            <LabeledTextInput required
                 type={'email'}
                 label={'Ваша электронная почта'}
                 placeholder={'Введите e-mail'}
@@ -48,7 +48,7 @@ export const OrderFirstJuridicalPage = () => {
                 }}
                 errored={Boolean(formState.errors.email)}
             />
-            <LabeledPhoneInput
+            <LabeledPhoneInput required
                 type={'text'}
                 label={'Ваш номер телефона'}
                 placeholder={'Введите номер телефона'}
