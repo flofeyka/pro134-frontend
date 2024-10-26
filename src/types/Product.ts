@@ -35,7 +35,7 @@ export interface IProduct {
     overcurrent_protection: string;
     overvoltage_protection: string;
     overheating_protection: string;
-    recharge_protecting: string;
+    recharge_protection: string;
     size: string;
     price: number;
     id: number;
@@ -52,6 +52,12 @@ export interface IProduct {
             product_id: number
         }
     >,
+
+    pdf: Array<{
+        id: number,
+        source: string,
+        product_id: number
+    }>
 
     created_at: Date
     updated_at: Date

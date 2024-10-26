@@ -170,8 +170,9 @@ interface IAddProductForm {
   overcurrent_protection: string;
   overvoltage_protection: string;
   overheating_protection: string;
-  recharge_protecting: string;
+  recharge_protection: string;
   size: string;
+  count: number;
   price: string;
 }
 
@@ -503,19 +504,6 @@ export const AdminAddProductPage = () => {
                       }}
                     />
                   </Param>
-                  <Param $errored={Boolean(methods.formState.errors.output)}>
-                    <div>Выход</div>
-                    <TextInput
-                      type="text"
-                      placeholder="Нет инфо"
-                      registerOpts={{
-                        name: "output",
-                        options: {
-                          required: true,
-                        },
-                      }}
-                    />
-                  </Param>
                   <Param $errored={Boolean(methods.formState.errors.dc_output)}>
                     <div>Выход постоянного тока</div>
                     <TextInput
@@ -590,7 +578,7 @@ export const AdminAddProductPage = () => {
                     <div>Объем двигателя</div>
                     <InputMask
                       type="text"
-                      mask="9999999999 см³"
+                      mask="99999 см³"
                       placeholder="Нет инфо"
                       {...methods.register("engine_volume", { required: true })}
                     />
@@ -806,7 +794,7 @@ export const AdminAddProductPage = () => {
                   </Param>
                   <Param
                     $errored={Boolean(
-                      methods.formState.errors.recharge_protecting
+                      methods.formState.errors.recharge_protection
                     )}
                   >
                     <div>Защита от перезаряда</div>
@@ -814,7 +802,7 @@ export const AdminAddProductPage = () => {
                       type="text"
                       placeholder="Нет инфо"
                       registerOpts={{
-                        name: "recharge_protecting",
+                        name: "recharge_protection",
                         options: {
                           required: true,
                         },
@@ -838,6 +826,19 @@ export const AdminAddProductPage = () => {
                   </Param>
                 </Params>
                 <Params>
+                <Param $errored={Boolean(methods.formState.errors.count)}>
+                    <div>Количество</div>
+                    <TextInput
+                      type="text"
+                      placeholder="Нет инфо"
+                      registerOpts={{
+                        name: "count",
+                        options: {
+                          required: true,
+                        },
+                      }}
+                    />
+                  </Param>
                   <Param $errored={Boolean(methods.formState.errors.price)}>
                     <div>Цена</div>
                     <TextInput
@@ -851,6 +852,7 @@ export const AdminAddProductPage = () => {
                       }}
                     />
                   </Param>
+
                   <Param $errored={false}>
                     <div>Инструкция</div>
                     <input type="file" onChange={onChangePdf} />

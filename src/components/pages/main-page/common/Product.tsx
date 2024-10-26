@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -74,29 +75,33 @@ const Param = styled.div`
     }
 `
 
-export const Product = (p: Props) => {
+const ParamWrapper: React.FC<{children: React.ReactNode, value: boolean}> = ({children, value}) => {
+    return value ? <Param>{children}</Param> : null
+}
+ 
+export const Product: React.FC<Props> = (p) => {
     return (
         <>
             <Container>
                 <Image src={p.photo} alt=""/>
                 <Content>
                     <Heading>{p.title}</Heading>
-                    <Param>
+                    <ParamWrapper value={!!p.power}>
                         <div>Мощность</div>
                         <div>{p.power} Ватт</div>
-                    </Param>
-                    <Param>
+                    </ParamWrapper>
+                    <ParamWrapper value={+p.capacity > 0}>
                         <div>Ёмкость аккумулятора</div>
                         <div>{p.capacity}</div>
-                    </Param>
-                    <Param>
+                    </ParamWrapper>
+                    <ParamWrapper value={!!p.weight}>
                         <div>Вес</div>
                         <div>{p.weight}</div>
-                    </Param>
-                    <Param>
+                    </ParamWrapper>
+                    <ParamWrapper value={(p.height + p.width + p.length) > 0}>
                         <div>Размер</div>
                         <div>{p.height}x{p.length}x{p.width} см</div>
-                    </Param>
+                    </ParamWrapper>
                 </Content>
             </Container>
         </>

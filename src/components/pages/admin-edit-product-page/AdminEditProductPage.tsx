@@ -1,27 +1,25 @@
-import styled from "styled-components";
 import { Wrapper } from "@comp/hoc/wrapper/Wrapper";
+import { AddImageInput } from "@comp/pages/admin-add-product-page/common/AddImageInput";
+import { AddImageItem } from "@comp/pages/admin-add-product-page/common/AddImageItem";
+import { DropModal } from "@comp/pages/admin-add-product-page/common/DropModal";
+import { Button } from "@comp/ui/button/Button";
+import { TextInput } from "@comp/ui/text-input/TextInput";
+import { useProductWithStopped } from "@src/hooks/useProductWithStopped";
+import { authFetch } from "@src/lib/auth_fetch";
+import { fillMaskString } from "@src/lib/fill_mask_string";
+import { IProduct } from "@src/types/Product";
 import {
   ChangeEvent,
   DragEventHandler,
-  FormEvent,
   useEffect,
-  useState,
+  useState
 } from "react";
-import { AddImageItem } from "@comp/pages/admin-add-product-page/common/AddImageItem";
-import { AddImageInput } from "@comp/pages/admin-add-product-page/common/AddImageInput";
-import { TextInput } from "@comp/ui/text-input/TextInput";
-import { Button } from "@comp/ui/button/Button";
-import InputMask from "react-input-mask";
-import { DropModal } from "@comp/pages/admin-add-product-page/common/DropModal";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { useNavigate, useParams } from "react-router-dom";
-import { useProduct } from "@src/hooks/useProduct";
-import { IProduct } from "@src/types/Product";
-import { fillMaskString } from "@src/lib/fill_mask_string";
-import { authFetch } from "@src/lib/auth_fetch";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { useProductWithStopped } from "@src/hooks/useProductWithStopped";
+import InputMask from "react-input-mask";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const MainContainer = styled.div`
   padding: 70px 0;
@@ -180,7 +178,8 @@ interface IEditProductForm {
   overcurrent_protection: string;
   overvoltage_protection: string;
   overheating_protection: string;
-  recharge_protecting: string;
+  count: number;
+  recharge_protection: string;
 }
 
 export const AdminEditProductPage = () => {
@@ -230,7 +229,7 @@ export const AdminEditProductPage = () => {
         methods.setValue("overcurrent_protection", p.overcurrent_protection);
         methods.setValue("overvoltage_protection", p.overvoltage_protection);
         methods.setValue("overheating_protection", p.overheating_protection);
-        methods.setValue("recharge_protection", p.recharge_protecting);
+        methods.setValue("recharge_protection", p.recharge_protection);
         methods.setValue("construction_type", p.construction_type);
         methods.setValue("noise_level", p.noise_level);
         methods.setValue(
@@ -247,6 +246,7 @@ export const AdminEditProductPage = () => {
         methods.setValue("type_c_output", p.type_c_output);
         methods.setValue("output_signal", p.output_signal);
         methods.setValue("gross_weight", p.gross_weight);
+        methods.setValue("count", p.count);
         methods.setValue("size", `${p.height}x${p.length}x${p.width}`);
         methods.setValue("price", p.price.toString());
 
@@ -374,6 +374,19 @@ export const AdminEditProductPage = () => {
             <FormProvider {...methods}>
               <Form onSubmit={methods.handleSubmit(submitHandler)}>
                 <Params>
+                  <Param $errored={Boolean(methods.formState.errors.model)}>
+                    <div>Артикул</div>
+                    <TextInput
+                      type="text"
+                      placeholder="Нет инфо"
+                      registerOpts={{
+                        name: "articul",
+                        options: {
+                          required: true,
+                        },
+                      }}
+                    />
+                  </Param>
                   <Param $errored={Boolean(methods.formState.errors.model)}>
                     <div>Модель</div>
                     <TextInput
@@ -587,19 +600,6 @@ export const AdminEditProductPage = () => {
                       }}
                     />
                   </Param>
-                  <Param $errored={Boolean(methods.formState.errors.output)}>
-                    <div>Выход</div>
-                    <TextInput
-                      type="text"
-                      placeholder="Нет инфо"
-                      registerOpts={{
-                        name: "output",
-                        options: {
-                          required: true,
-                        },
-                      }}
-                    />
-                  </Param>
                   <Param $errored={Boolean(methods.formState.errors.dc_output)}>
                     <div>Выход постоянного тока</div>
                     <TextInput
@@ -674,7 +674,7 @@ export const AdminEditProductPage = () => {
                     <div>Объем двигателя</div>
                     <InputMask
                       type="text"
-                      mask="9999999999 см³"
+                      mask="99999 см³"
                       placeholder="Нет инфо"
                       {...methods.register("engine_volume", { required: true })}
                     />
@@ -890,7 +890,7 @@ export const AdminEditProductPage = () => {
                   </Param>
                   <Param
                     $errored={Boolean(
-                      methods.formState.errors.recharge_protecting
+                      methods.formState.errors.recharge_protection
                     )}
                   >
                     <div>Защита от перезаряда</div>
@@ -898,7 +898,7 @@ export const AdminEditProductPage = () => {
                       type="text"
                       placeholder="Нет инфо"
                       registerOpts={{
-                        name: "recharge_protecting",
+                        name: "recharge_protection",
                         options: {
                           required: true,
                         },
@@ -922,6 +922,19 @@ export const AdminEditProductPage = () => {
                   </Param>
                 </Params>
                 <Params>
+                  <Param $errored={Boolean(methods.formState.errors.count)}>
+                    <div>Количество</div>
+                    <TextInput
+                      type="text"
+                      placeholder="Нет инфо"
+                      registerOpts={{
+                        name: "count",
+                        options: {
+                          required: true,
+                        },
+                      }}
+                    />
+                  </Param>
                   <Param $errored={Boolean(methods.formState.errors.price)}>
                     <div>Цена</div>
                     <TextInput

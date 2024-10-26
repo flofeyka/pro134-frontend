@@ -2,7 +2,7 @@ import { Wrapper } from "@comp/hoc/wrapper/Wrapper";
 import styled from "styled-components";
 import { Button } from "@comp/ui/button/Button";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IProduct } from "@src/types/Product";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useProduct } from "@src/hooks/useProduct";
@@ -295,8 +295,8 @@ export const ProductPage = () => {
                   src={
                     product
                       ? product.photos[0].id === 0
-                        ? product.photos[0].source
-                        : "/api/public/" + product.photos[currentImage].source
+                        ? product.photos[0]?.source
+                        : "/api/public/" + product.photos[currentImage]?.source
                       : ""
                   }
                 />
@@ -309,8 +309,8 @@ export const ProductPage = () => {
                           $current={currentImage === i}
                           src={
                             photo.id === 0
-                              ? photo.source
-                              : "/api/public/" + photo.source
+                              ? photo?.source
+                              : "/api/public/" + photo?.source
                           }
                           key={photo.id}
                         />
@@ -390,10 +390,6 @@ export const ProductPage = () => {
                   <Param property={product?.usb_output}>
                     <div>USB-выход</div>
                     <div>{product?.usb_output}</div>
-                  </Param>
-                  <Param property={product?.output}>
-                    <div>Выход</div>
-                    <div>{product?.output}</div>
                   </Param>
                   <Param property={product?.dc_output}>
                     <div>Выход постоянного тока</div>
@@ -475,10 +471,6 @@ export const ProductPage = () => {
                     <div>Модель двигателя</div>
                     <div>{product?.engine_model}</div>
                   </Param>
-                  <Param property={product?.alternator}>
-                    <div>Альтернатор</div>
-                    <div>{product?.alternator}</div>
-                  </Param>
                   <Param property={product?.recommended_oil}>
                     <div>Рекомендованное масло</div>
                     <div>{product?.recommended_oil}</div>
@@ -499,9 +491,12 @@ export const ProductPage = () => {
                     <div>Защита от перегрева</div>
                     <div>{product?.overheating_protection}</div>
                   </Param>
-                  <Param property={product?.recharge_protecting}>
+                  <Param property={product?.recharge_protection}>
                     <div>Защита от перезаряда</div>
-                    <div>{product?.recharge_protecting}</div>
+                    <div>{product?.recharge_protection}</div>
+                  </Param>
+                  <Param property={String(product?.pdf.length > 0)}>
+                    <a href={`/api/public/${product?.pdf[0]?.source}`}>Инструкция</a>
                   </Param>
                 </HiddenParams>
                 <SeeMoreParamsBlock $open={moreParams}>
