@@ -4,6 +4,6 @@ import {authFetch} from "@src/lib/auth_fetch";
  * @return Promise<boolean>
  */
 export const useCheckAuth = async () => {
-    const res = await authFetch('/api/check-auth')
+    const res = await authFetch('https://pro134.store/api/check-auth')
     return res.ok
 }

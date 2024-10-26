@@ -73,7 +73,7 @@ export const AdminLoginPage = () => {
     const loginAction:SubmitHandler<ILoginForm> = async (data, e) => {
         e.preventDefault();
 
-        const res = await fetch('/api/login', {
+        const res = await fetch('https://pro134.store/api/login', {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
