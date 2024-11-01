@@ -156,7 +156,7 @@ export const AdminStatPage = () => {
 
                         {orders.map(i =>
                             <AdminOrderItem
-                                imageSrc={useProductImage(i.products[0].product)}
+                                imageSrc={useProductImage(i.products[0]?.product)}
                                 type={i.type}
                                 title={i.type === 'PHYSICAL' ? `${i.surname} ${i.name} ${i.patronymic}` : i.organization}
                                 email={i.email}
