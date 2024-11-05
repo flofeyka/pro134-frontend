@@ -245,15 +245,14 @@ export const ProductPage = () => {
       if (res.status === 404) {
         navigate("/not-found");
       }
-      const json = await res.json();
-      if (json.photos.length < 1) {
-        json.photos.push({
+      if (res.photos.length < 1) {
+        res.photos.push({
           product_id: +id,
-          source: useProductImage(json),
+          source: useProductImage(res),
           id: 0,
         });
       }
-      setProduct(json);
+      setProduct(res);
     };
     init();
   }, []);

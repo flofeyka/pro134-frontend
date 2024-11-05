@@ -1,12 +1,12 @@
-import {Wrapper} from "@comp/hoc/wrapper/Wrapper";
+import { Wrapper } from "@comp/hoc/wrapper/Wrapper";
 import styled from "styled-components";
 import { CartItem } from "./common/CartItem";
 import { Button } from "@src/components/ui/button/Button";
-import {useEffect, useState} from "react";
-import {useProduct} from "@src/hooks/useProduct";
-import {IProduct} from "@src/types/Product";
-import {useNavigate} from "react-router-dom";
-import {useProductImage} from "@src/hooks/useProductPhotoValue";
+import { useEffect, useState } from "react";
+import { useProduct } from "@src/hooks/useProduct";
+import { IProduct } from "@src/types/Product";
+import { useNavigate } from "react-router-dom";
+import { useProductImage } from "@src/hooks/useProductPhotoValue";
 
 const MainContainer = styled.div`
     padding: 50px 0;
@@ -112,7 +112,7 @@ export const CartPage = () => {
     })()
 
     const [cart, setCart] = useState<Array<number>>(cartInitValue)
-    const [products, setProducts] = useState<Array<IProduct>>([])
+    const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const navigate = useNavigate()
 
@@ -122,29 +122,28 @@ export const CartPage = () => {
         const promises = cart.map(i => {
             return  new Promise(async (resolve, reject) => {
                 const res = await useProduct(i)
-                if (!res.ok) {
-                    reject()
-                }
-                const json = await res.json()
 
-                if (json.photos.length < 0) {
-                    json.photos.push({
-                        product_id: json.id,
-                        source: useProductImage(json),
+                if (res.photos.length < 0) {
+                    res.photos.push({
+                        product_id: res.id,
+                        source: useProductImage(res),
                         id: 0
                     })
                 }
 
-                json.count = 1
+                res.count = 1
 
-                listProducts.push(json)
+                listProducts.push(res)
                 resolve(true)
             })
         })
 
-        Promise.all(promises).then(() => setProducts(listProducts))
+        Promise.allSettled(promises).then(() => setProducts(listProducts))
 
-    }, []);
+
+    }, [cartInitValue.length]);
+
+    
 
     const onOrder = () => {
         const orderedProducts = products.filter(p => p.count > 0).map(p => {
@@ -198,7 +197,7 @@ export const CartPage = () => {
                                 )
                             }
 
-                            <PriceLine/>
+                            <PriceLine />
 
                             <PriceItem>
                                 <div>Итого</div>
@@ -208,7 +207,7 @@ export const CartPage = () => {
                             <OrderButton
                                 onClick={onOrder}
                             >
-                                <Button text="Оформить заказ"/>
+                                <Button text="Оформить заказ" />
                             </OrderButton>
 
                         </PriceBlock>

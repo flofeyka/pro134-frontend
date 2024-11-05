@@ -1,3 +1,8 @@
 export const useProduct = async (id: number) => {
-    return await fetch(`/api/product/${id}`)
+    try {
+        const response = await fetch(`https://pro134.store/api/product/${id}`).then(res => res.json());
+        return response;
+    } catch (e) {
+        console.log(e);
+    }
 }
