@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import {Wrapper} from "@comp/hoc/wrapper/Wrapper";
-import {Link} from "react-router-dom";
-import {useOrders} from "@src/hooks/useOrders";
-import {useContext, useEffect, useState} from "react";
-import {IOrder} from "@src/types/Order";
-import {AdminOrderItem} from "@comp/pages/admin-stat-page/common/AdminOrderItem";
-import {WebsocketContext} from "@src/context/websocket-context";
-import {IProduct} from "@src/types/Product";
-import {usePopularProducts} from "@src/hooks/usePopularProducts";
-import {useProductImage} from "@src/hooks/useProductPhotoValue";
+import { Wrapper } from "@comp/hoc/wrapper/Wrapper";
+import { Link } from "react-router-dom";
+import { useOrders } from "@src/hooks/useOrders";
+import { useContext, useEffect, useState } from "react";
+import { IOrder } from "@src/types/Order";
+import { AdminOrderItem } from "@comp/pages/admin-stat-page/common/AdminOrderItem";
+import { WebsocketContext } from "@src/context/websocket-context";
+import { IProduct } from "@src/types/Product";
+import { usePopularProducts } from "@src/hooks/usePopularProducts";
+import { useProductImage } from "@src/hooks/useProductPhotoValue";
 
 const HeadingBlock = styled.div`
     margin: 70px 0 30px 0;
@@ -70,7 +70,7 @@ const StatContainer = styled.div`
     grid-gap: 20px;
 `
 
-const StatBlock = styled.div<{blue?: boolean}>`
+const StatBlock = styled.div<{ blue?: boolean }>`
     padding: 20px;
     border-radius: 10px;
     background-color: ${p => p.blue ? '#0047FF' : '#FFF'};
@@ -154,7 +154,7 @@ export const AdminStatPage = () => {
                     <OrderContainer>
                         <OrderHeading>Кто и что заказывал</OrderHeading>
 
-                        {orders.map(i =>
+                        {orders.map(i => i.products.length > 0 &&
                             <AdminOrderItem
                                 imageSrc={useProductImage(i.products[0]?.product)}
                                 type={i.type}
