@@ -120,10 +120,15 @@ export const CartPage = () => {
         const listProducts: Array<IProduct> = []
 
         const promises = cart.map(i => {
-            return  new Promise(async (resolve, reject) => {
-                const res = await useProduct(i)
+            return new Promise(async (resolve, reject) => {
+                const res = await useProduct(i);
+                console.log(res);
+                if (res === "Продукт не найден") {
+                    console.log("error");
+                    return reject('d');
+                }
 
-                if (res.photos.length < 0) {
+                if (res.photos && res.photos.length < 0) {
                     res.photos.push({
                         product_id: res.id,
                         source: useProductImage(res),
@@ -131,7 +136,10 @@ export const CartPage = () => {
                     })
                 }
 
-                res.count = 1
+                if (res.id) {
+
+                    res.count = 1
+                }
 
                 listProducts.push(res)
                 resolve(true)
@@ -143,7 +151,7 @@ export const CartPage = () => {
 
     }, [cartInitValue.length]);
 
-    
+
 
     const onOrder = () => {
         const orderedProducts = products.filter(p => p.count > 0).map(p => {
