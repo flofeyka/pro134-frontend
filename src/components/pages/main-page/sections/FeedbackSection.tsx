@@ -6,6 +6,7 @@ import FeedbackSrc from "@img/feedback.png"
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from "react-hook-form";
 import BlueLines from "@img/BlueLines.svg"
 import {LabeledPhoneInput} from "@comp/ui/text-input/LabeledPhoneInput";
+import {useState} from "react";
 
 const Heading = styled.h2`
     font-family: var(--montserrat-extrabold);
@@ -38,7 +39,7 @@ const SubmitButton = styled.button`
     outline: none;
     border: none;
     margin: 20px auto 0 auto;
-    
+
     @media screen and (min-width: 900px) {
         margin: 20px 0;
     }
@@ -71,34 +72,37 @@ const Form = styled.form`
     width: 100%;
     position: relative;
     overflow: hidden;
-    
+
     @media screen and (min-width: 900px) {
-        width: min(100%, 548px);    
+        width: min(100%, 548px);
     }
 `
 
 interface IFeedbackForm {
-    name: string
-    surname: string
     email: string
-    phone: string
+    question: string
 }
 
 export const FeedbackSection = () => {
-    const methods = useForm()
+    const methods = useForm();
+    const [success, setSuccess] = useState<boolean>(false);
 
-    const onValid:SubmitHandler<IFeedbackForm> = async (data, event) => {
+    const onValid: SubmitHandler<IFeedbackForm> = async (data, event) => {
         event.preventDefault()
-        const res = await fetch('/api/feedback', {
+        const response = await fetch('https://pro134.store/api/feedback', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
             }
         })
+
+        if(response.status === 200) {
+            setSuccess(true);
+        }
     }
 
-    const onInvalid:SubmitErrorHandler<IFeedbackForm> = (data, event) => {
+    const onInvalid: SubmitErrorHandler<IFeedbackForm> = (data, event) => {
         event.preventDefault()
         console.log('form error')
     }
@@ -108,7 +112,7 @@ export const FeedbackSection = () => {
     return (
         <>
             <Container id="feedback">
-                <BlueLines width={808} height={761} />
+                <BlueLines width={808} height={761}/>
                 <Wrapper>
                     <Flex>
                         <FormProvider {...methods}>
@@ -117,32 +121,14 @@ export const FeedbackSection = () => {
                                 method="POST"
                                 onSubmit={onSubmit}
                             >
-                                <Heading>Заказать звонок</Heading>
-                                <div style={{marginBottom: '10px'}}>
-                                    <LabeledTextInput
-                                        label={'Ваше имя'}
-                                        type={'text'}
-                                        placeholder={'Введите имя'}
-                                        registerOpts={{
-                                            name: 'name',
-                                            options: {required: true}
-                                        }}
-                                        errored={Boolean(methods.formState.errors.name)}
-                                    />
-                                </div>
+                                <Heading>
+                                    <div>
+                                        Задать вопрос
+                                        </div>
+                                    <div
+                                        style={{color: "white", fontSize: "12px"}}>{success && "Спасибо! Ваш вопрос был успешно отправлен!"}</div>
 
-                                <div style={{marginBottom: '10px'}}>
-                                    <LabeledTextInput
-                                        label={'Ваша фамилия'}
-                                        type={'text'}
-                                        placeholder={'Введите фамилию'}
-                                        registerOpts={{
-                                            name: 'surname',
-                                            options: {required: true}
-                                        }}
-                                        errored={Boolean(methods.formState.errors.surname)}
-                                    />
-                                </div>
+                                </Heading>
 
                                 <div style={{marginBottom: '10px'}}>
                                     <LabeledTextInput
@@ -158,23 +144,20 @@ export const FeedbackSection = () => {
                                 </div>
 
                                 <div style={{marginBottom: '10px'}}>
-                                    <LabeledPhoneInput
-                                        label={'Ваш номер телефона'}
+                                    <LabeledTextInput
+                                        label={'Ваш вопрос'}
                                         type={'text'}
-                                        placeholder={'Введите номер телефона'}
                                         registerOpts={{
-                                            name: 'phone',
-                                            options: {
-                                                required: true,
-                                                pattern: /^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$/,
-                                            }
+                                            name: "question",
+                                            options: {required: true}
                                         }}
-                                        errored={Boolean(methods.formState.errors.phone)}
+                                        placeholder={'Введите вопрос'}
+                                        errored={Boolean(methods.formState.errors.question)}
                                     />
                                 </div>
 
                                 <SubmitButton type="submit">
-                                    <Button text={'Связаться с нами'} />
+                                    <Button text={'Связаться с нами'}/>
                                 </SubmitButton>
                             </Form>
                         </FormProvider>

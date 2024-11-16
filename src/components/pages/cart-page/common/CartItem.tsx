@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import {CountableNumberInput} from "@comp/ui/number-input/CountableNumberInput";
-import {ChangeEventHandler} from "react";
+import React, {ChangeEventHandler} from "react";
 import {Link} from "react-router-dom";
+import {IProduct} from "@src/types/Product";
 
 const MainContainer = styled.div`
     background-color: #F5F5F5;
     border-radius: 10px;
     padding: 20px;
     display: flex;
-    gap: 10px;
+    gap: 5px;
     flex-direction: column;
     
     @media screen and (min-width: 800px) {
@@ -71,13 +72,28 @@ type Props = {
     price: number,
     count: number,
     setCount: (value: number) => void,
+    selectedProducts: number[],
+    onSelectProduct: (prev: (prev: number[]) => number[]) => void,
 }
 
-export const CartItem = (p: Props) => {
+export const CartItem: React.FC<Props> = (p: Props): React.ReactNode => {
+    const selected = p.selectedProducts.find((i: number) => i === p.id);
     return (
         <>
             <MainContainer>
                 <HeadBlock>
+                    <input type={"checkbox"} checked={!!selected}
+                           onChange={() => {
+                               if(selected) {
+                                   p.onSelectProduct((prev: number[]) => prev.filter(i => i !== p.id));
+                               } else {
+                                   p.onSelectProduct((prev: number[]) => [...prev, p.id])
+                               }
+                           }}
+                           style={{
+                        width: "20px",
+                        height: "20px"
+                    }}/>
                     <Link to={`/product/${p.id}`}>
                         <Image src={p.photo} alt={''}/>
                     </Link>

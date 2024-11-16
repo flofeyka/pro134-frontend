@@ -6,7 +6,7 @@ const Container = styled.div<{ $invert?: boolean }>`
     font-size: clamp(12px, 2vw, 16px);
     line-height: clamp(14px, 3vw, 20px);
     color: ${p => p.$invert ? 'var(--blue)' : 'var(--white)'};
-    padding: 13px 30px;
+    padding: 10px 25px;
     background-color: ${p => p.$invert ? 'var(--white)' : 'var(--blue)'};
     border-radius: 23px;
     border: 1px solid var(--blue);
@@ -19,12 +19,13 @@ const Container = styled.div<{ $invert?: boolean }>`
 type Props = {
     text: string,
     invert?: boolean
+    onClick?: () => void
 }
 
-export const Button = (p: Props) => {
+export const Button = ({text, invert, onClick}: Props) => {
     return (
         <>
-            <Container $invert={p.invert} >{p.text}</Container>
+            <Container $invert={invert} onClick={onClick}>{text}</Container>
         </>
     );
 };
