@@ -4,7 +4,7 @@ import {BrowserRouter} from "react-router-dom";
 import {StrictMode} from "react";
 import {useWebSocket} from "@src/hooks/useWebSocket";
 import {WebsocketContext} from './context/websocket-context';
-
+import "@assets/css/index.css";
 const rootElement = document.getElementById('root')
 if (!rootElement) {
     console.log('root is not found')
