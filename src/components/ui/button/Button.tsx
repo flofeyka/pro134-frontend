@@ -19,7 +19,7 @@ const Container = styled.div<{ $invert?: boolean }>`
 type Props = {
     text: string,
     invert?: boolean
-    onClick?: () => void
+    onClick?: () => void;
 }
 
 export const Button = ({text, invert, onClick}: Props) => {

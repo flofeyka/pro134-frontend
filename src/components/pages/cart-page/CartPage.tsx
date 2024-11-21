@@ -172,7 +172,10 @@ export const CartPage = () => {
 
 
     const onOrder = () => {
-        const orderedProducts = products.filter(p => p.count > 0).map(p => {
+        if(selectedProducts.length === 0) {
+            return;
+        }
+        const orderedProducts = products.filter(p => p.count > 0 && selectedProducts.find(id => p.id === id)).map(p => {
             return {
                 product_id: p.id,
                 count: p.count
@@ -240,7 +243,7 @@ export const CartPage = () => {
                             <PriceBlockHeading>Сумма заказа</PriceBlockHeading>
 
                             {
-                                products.filter(p => p.count > 0).map(p =>
+                                products.filter(p => p.count > 0 && selectedProducts.find(id => p.id === id)).map(p =>
                                     <PriceItem>
                                         <div>{p.model}</div>
                                         <div>{p.count}x{p.price}₽</div>
@@ -252,13 +255,13 @@ export const CartPage = () => {
 
                             <PriceItem>
                                 <div>Итого</div>
-                                <div>{products.reduce((sum: number, p) => sum + +p.price * p.count, 0)}₽</div>
+                                <div>{products.filter(p => selectedProducts.find(id => p.id === id)).reduce((sum: number, p) => sum + +p.price * p.count, 0)}₽</div>
                             </PriceItem>
 
                             <OrderButton
                                 onClick={onOrder}
                             >
-                                <Button text="Оформить заказ"/>
+                                <Button invert={selectedProducts.length < 1} text="Оформить заказ"/>
                             </OrderButton>
 
                         </PriceBlock>
